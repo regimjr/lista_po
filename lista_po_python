@@ -1,0 +1,492 @@
+#Exercício 1
+
+!pip install pulp
+
+from pulp import LpProblem, LpVariable, LpMaximize, LpStatus
+
+ex_1 = LpProblem("Maximimizar", LpMaximize)
+
+x = LpVariable("Program_A", lowBound = 0 , cat = "Integer")
+y = LpVariable("Program_B", lowBound = 0 , cat = "Integer")
+
+ex_1 += 30000 * x + 10000*y
+
+ex_1 += 20*x + 10*y <= 80
+ex_1 += x + y >= 5
+
+ex_1.solve()
+
+print("Status:", LpStatus[ex_1.status])
+
+print(f"Programa A deve ser exibido {x.varValue} vezes por semana.")
+print(f"Programa B deve ser exibido {y.varValue} vezes por semana.")
+print(f"Máximo número de telespectadores: {ex_1.objective.value()}")
+
+# Exercicio 2
+!pip install pulp
+
+from pulp import LpProblem, LpVariable, LpMaximize, LpStatus, lpSum
+
+problema = LpProblem("MaxLucro", LpMaximize)
+
+P1 = LpVariable("P1", lowBound=0, cat="Continuous")
+P2 = LpVariable("P2", lowBound=0, cat="Continuous")
+P3 = LpVariable("P3", lowBound=0, cat="Continuous")
+
+problema += 30 * P1 + 12 * P2 + 15 * P3, "Lucro_Total"
+
+problema += 9 * P1 + 3 * P2 + 5 * P3 <= 500, "Restricao_1"
+problema += 5 * P1 + 4 * P2 + 0 * P3 <= 350, "Restricao_2"
+problema += 3 * P1 + 0 * P2 + 2 * P3 <= 150, "Restricao_3"
+
+problema.solve()
+
+print("Status da Solução:", LpStatus[problema.status])
+
+for v in problema.variables():
+    print(v.name, "=", v.varValue)
+
+print("Lucro máximo:", problema.objective.value())
+
+#Exercício 3
+
+# Importação da biblioteca pulp
+!pip install pulp
+
+from pulp import LpProblem, LpVariable, LpMaximize, LpStatus
+
+# Criar o problema de maximização do lucro
+ex3 = LpProblem("Maximizar Lucro", LpMaximize)
+
+# Definir as variáveis de decisão
+L = LpVariable("Laranjas", lowBound=0, cat="Integer")  # Caixas de laranjas
+P = LpVariable("Pessegos", lowBound=0, cat="Integer")  # Caixas de pêssegos
+T = LpVariable("Tangerinas", lowBound=0, cat="Integer")  # Caixas de tangerinas
+
+# Definir a função objetivo (Maximizar Lucro)
+ex3 += 20 * L + 10 * P + 30 * T, "Lucro_maximo"
+
+# Adicionar restrições
+ex3 += L + P + T == 800          # Capacidade total de transporte
+ex3 += L == 200                  # Exatamente 200 caixas de laranjas
+ex3 += P >= 100                  # Pelo menos 100 caixas de pêssegos
+ex3 += T <= 200                  # No máximo 200 caixas de tangerinas
+
+# Resolver o problema
+ex3.solve()
+
+# Exibir o status da solução
+print("Status da Solução:", LpStatus[ex3.status])
+
+# Exibir os valores das variáveis de decisão
+print(f"Caixas de Laranjas (L) = {L.varValue}")
+print(f"Caixas de Pêssegos (P) = {P.varValue}")
+print(f"Caixas de Tangerinas (T) = {T.varValue}")
+
+# Exibir o lucro máximo
+print("Lucro máximo:", ex3.objective.value())
+
+#Exercício 4
+
+#Exercicio 4
+!pip install pulp
+
+from pulp import LpProblem, LpVariable, LpMaximize, LpStatus, lpSum
+
+# Criar o problema de maximização
+problema = LpProblem("MaxLucro", LpMaximize)
+
+# Definir as variáveis de decisão
+P1 = LpVariable("P1", lowBound=0, cat="Continuous")
+P2 = LpVariable("P2", lowBound=0, cat="Continuous")
+
+# Definir a função objetivo
+problema += 100 * P1 + 150 * P2, "Lucro_Total"
+
+# Adicionar as restrições
+problema += 2 * P1 + 3 * P2 <= 120, "Restricao_1"
+problema += P1 <= 40, "Restricao_2"
+problema += P2 <= 30, "Restricao_3"
+
+# Resolver o problema
+problema.solve()
+
+# Mostrar o status da solução
+print("Status da Solução:", LpStatus[problema.status])
+
+# Mostrar os valores das variáveis de decisão
+for v in problema.variables():
+    print(v.name, "=", v.varValue)
+
+# Mostrar o valor da função objetivo
+print("Lucro máximo:", problema.objective.value())
+
+#Exercício 5
+
+# Importação da biblioteca pulp
+!pip install pulp
+
+from pulp import LpProblem, LpVariable, LpMaximize, LpStatus
+
+# Criar o problema de maximização do retorno
+ex5 = LpProblem("Maximizar Retorno", LpMaximize)
+
+# Definir as variáveis de decisão
+A = LpVariable("Arrendamento", lowBound=0, cat="Continuous")  # Alqueires para arrendamento
+P = LpVariable("Pecuaria", lowBound=0, cat="Continuous")      # Alqueires para pecuária
+S = LpVariable("Soja", lowBound=0, cat="Continuous")          # Alqueires para plantio de soja
+
+# Definir a função objetivo (Maximizar Retorno)
+ex5 += 300 * A + 400 * P + 500 * S, "Retorno_maximo"
+
+# Adicionar restrições
+ex5 += A + P + S <= 100                # Limite total de alqueires disponíveis
+ex5 += 100000 * P + 200000 * S <= 12750000  # Limite de água disponível
+ex5 += 100 * P + 200 * S <= 14000      # Limite de adubo disponível
+
+# Resolver o problema
+ex5.solve()
+
+# Exibir o status da solução
+print("Status da Solução:", LpStatus[ex5.status])
+
+# Exibir os valores das variáveis de decisão
+print(f"Alqueires para Arrendamento (A) = {A.varValue}")
+print(f"Alqueires para Pecuária (P) = {P.varValue}")
+print(f"Alqueires para Soja (S) = {S.varValue}")
+
+# Exibir o retorno máximo
+print("Retorno máximo:", ex5.objective.value())
+
+#Exercício 6
+
+# Importação da biblioteca pulp
+!pip install pulp
+
+from pulp import LpProblem, LpVariable, LpMinimize, LpStatus
+
+# Criar o problema de minimização de custo
+ex6 = LpProblem("Minimizar Custo", LpMinimize)
+
+# Definir as variáveis de decisão
+X1 = LpVariable("Avioes_Tipo1_PropriedadeA", lowBound=0, cat="Integer")
+X2 = LpVariable("Avioes_Tipo2_PropriedadeA", lowBound=0, cat="Integer")
+X3 = LpVariable("Avioes_Tipo3_PropriedadeA", lowBound=0, cat="Integer")
+Y1 = LpVariable("Avioes_Tipo1_PropriedadeB", lowBound=0, cat="Integer")
+Y2 = LpVariable("Avioes_Tipo2_PropriedadeB", lowBound=0, cat="Integer")
+Y3 = LpVariable("Avioes_Tipo3_PropriedadeB", lowBound=0, cat="Integer")
+
+# Definir a função objetivo (Minimizar Custo)
+ex6 += 23 * X1 + 15 * X2 + 14 * X3 + 58 * Y1 + 20 * Y2 + 38 * Y3, "Custo_minimo"
+
+# Adicionar restrições
+ex6 += X1 + Y1 <= 8    # Limite de aviões tipo 1
+ex6 += X2 + Y2 <= 15   # Limite de aviões tipo 2
+ex6 += X3 + Y3 <= 11   # Limite de aviões tipo 3
+
+# Restrição de tonelagem para atender a necessidade da propriedade A
+ex6 += 4.5 * X1 + 7 * X2 + 5 * X3 == 20
+
+# Restrição de tonelagem para atender a necessidade da propriedade B
+ex6 += 4.5 * Y1 + 7 * Y2 + 5 * Y3 == 28
+
+# Resolver o problema
+ex6.solve()
+
+# Exibir o status da solução
+print("Status da Solução:", LpStatus[ex6.status])
+
+# Exibir os valores das variáveis de decisão
+print(f"Aviões tipo 1 enviados para A (X1) = {X1.varValue}")
+print(f"Aviões tipo 2 enviados para A (X2) = {X2.varValue}")
+print(f"Aviões tipo 3 enviados para A (X3) = {X3.varValue}")
+print(f"Aviões tipo 1 enviados para B (Y1) = {Y1.varValue}")
+print(f"Aviões tipo 2 enviados para B (Y2) = {Y2.varValue}")
+print(f"Aviões tipo 3 enviados para B (Y3) = {Y3.varValue}")
+
+# Exibir o custo mínimo
+print("Custo mínimo:", ex6.objective.value())
+
+#Exercício 7
+
+# Importação da biblioteca pulp
+!pip install pulp
+
+from pulp import LpProblem, LpVariable, LpMaximize, LpStatus
+
+# Criar o problema de maximização da receita
+ex7 = LpProblem("Maximizar Receita", LpMaximize)
+
+# Definir as variáveis de decisão
+X1 = LpVariable("Alcool_Anidro", lowBound=0, cat="Continuous")     # Toneladas de álcool anidro
+X2 = LpVariable("Alcool_Hidratado", lowBound=0, cat="Continuous")  # Toneladas de álcool hidratado
+
+# Definir a função objetivo (Maximizar Receita)
+ex7 += 40 * X1 + 30 * X2, "Receita_maxima"
+
+# Adicionar restrições
+ex7 += 0.5 * X1 <= 8              # Limite de horas para o setor I
+ex7 += X2 <= 8                    # Limite de horas para o setor II
+ex7 += (1/3) * X1 + (2/3) * X2 <= 8  # Limite de horas para o setor III
+
+# Resolver o problema
+ex7.solve()
+
+# Exibir o status da solução
+print("Status da Solução:", LpStatus[ex7.status])
+
+# Exibir os valores das variáveis de decisão
+print(f"Toneladas de Álcool Anidro (X1) = {X1.varValue}")
+print(f"Toneladas de Álcool Hidratado (X2) = {X2.varValue}")
+
+# Exibir a receita máxima
+print("Receita máxima:", ex7.objective.value())
+
+#Exercício 8
+
+# Importação da biblioteca pulp
+!pip install pulp
+
+from pulp import LpProblem, LpVariable, LpMaximize, LpStatus
+
+# Criar o problema de maximização do lucro
+ex8 = LpProblem("Maximizar Lucro", LpMaximize)
+
+# Definir as variáveis de decisão
+X1 = LpVariable("Madeira_Beneficiada", lowBound=0, cat="Continuous")     # m³ de madeira beneficiada
+X2 = LpVariable("Madeira_Compensada", lowBound=0, cat="Continuous")      # 100 m² de madeira compensada
+
+# Definir a função objetivo (Maximizar Lucro)
+ex8 += 45 * X1 + 60 * X2, "Lucro_maximo"
+
+# Adicionar restrições
+ex8 += 1 * X1 + 2 * X2 <= 32      # Limite de uso de pinho
+ex8 += 4 * X1 + 4 * X2 <= 72      # Limite de uso de canela
+ex8 += X1 >= 5                    # Demanda mínima de madeira beneficiada
+ex8 += X2 >= 12                   # Demanda mínima de madeira compensada (1200 m² representados por 12 unidades de 100 m²)
+
+# Resolver o problema
+ex8.solve()
+
+# Exibir o status da solução
+print("Status da Solução:", LpStatus[ex8.status])
+
+# Exibir os valores das variáveis de decisão
+print(f"Metros cúbicos de Madeira Beneficiada (X1) = {X1.varValue}")
+print(f"100 metros quadrados de Madeira Compensada (X2) = {X2.varValue}")
+
+# Exibir o lucro máximo
+print("Lucro máximo:", ex8.objective.value())
+
+#Exercício 9
+
+# Importação da biblioteca pulp
+!pip install pulp
+
+from pulp import LpProblem, LpVariable, LpMaximize, LpStatus
+
+# Criar o problema de maximização do lucro
+ex9 = LpProblem("Maximizar Lucro", LpMaximize)
+
+# Definir as variáveis de decisão
+A = LpVariable("Modelo_A", lowBound=0, cat="Integer")    # Dúzias do modelo A
+B = LpVariable("Modelo_B", lowBound=0, cat="Integer")    # Dúzias do modelo B
+C = LpVariable("Modelo_C", lowBound=0, cat="Integer")    # Dúzias do modelo C
+
+# Definir a função objetivo (Maximizar Lucro)
+ex9 += 16 * 12 * A + 30 * 12 * B + 50 * 12 * C, "Lucro_maximo"
+
+# Adicionar restrições
+ex9 += A >= 20 / 12                # Produção mínima do modelo A em dúzias
+ex9 += B >= 120 / 12               # Produção mínima do modelo B em dúzias
+ex9 += C >= 60 / 12                # Produção mínima do modelo C em dúzias
+
+# Restrição de tempo de fabricação
+ex9 += 3 * A + 3.5 * B + 5 * C <= 120
+
+# Restrição de tempo de montagem
+ex9 += 4 * A + 5 * B + 8 * C <= 160
+
+# Restrição de tempo de testes
+ex9 += 1 * A + 1.5 * B + 3 * C <= 48
+
+# Resolver o problema
+ex9.solve()
+
+# Exibir o status da solução
+print("Status da Solução:", LpStatus[ex9.status])
+
+# Exibir os valores das variáveis de decisão
+print(f"Dúzias do Modelo A (A) = {A.varValue}")
+print(f"Dúzias do Modelo B (B) = {B.varValue}")
+print(f"Dúzias do Modelo C (C) = {C.varValue}")
+
+# Exibir o lucro máximo
+print("Lucro máximo:", ex9.objective.value())
+
+#Exercício 10
+
+# Importação da biblioteca pulp
+!pip install pulp
+
+from pulp import LpProblem, LpVariable, LpMaximize, LpStatus
+
+# Criar o problema de maximização do lucro
+ex10 = LpProblem("Maximizar Lucro", LpMaximize)
+
+# Definir as variáveis de decisão
+M1 = LpVariable("Modelo_M1", lowBound=0, cat="Continuous")  # Unidades do modelo M1
+M2 = LpVariable("Modelo_M2", lowBound=0, cat="Continuous")  # Unidades do modelo M2
+
+# Definir a função objetivo (Maximizar Lucro)
+ex10 += 4 * M1 + 3 * M2, "Lucro_maximo"
+
+# Adicionar restrições
+ex10 += 2 * M1 + M2 <= 1000   # Limite de produção diária com base no tempo de fabricação
+ex10 += M1 <= 400             # Limite de fivelas para o modelo M1
+ex10 += M2 <= 700             # Limite de fivelas para o modelo M2
+ex10 += M1 + M2 <= 800        # Limite de couro disponível para ambos os modelos
+
+# Resolver o problema
+ex10.solve()
+
+# Exibir o status da solução
+print("Status da Solução:", LpStatus[ex10.status])
+
+# Exibir os valores das variáveis de decisão
+print(f"Unidades do Modelo M1 = {M1.varValue}")
+print(f"Unidades do Modelo M2 = {M2.varValue}")
+
+# Exibir o lucro máximo
+print("Lucro máximo:", ex10.objective.value())
+
+#Exercício 11
+
+# Importação da biblioteca pulp
+!pip install pulp
+
+from pulp import LpProblem, LpVariable, LpMaximize, LpStatus
+
+# Criar o problema de maximização do lucro
+ex11 = LpProblem("Maximizar Lucro", LpMaximize)
+
+# Definir as variáveis de decisão
+S = LpVariable("Sapatos", lowBound=0, cat="Continuous")  # Pares de sapatos produzidos por hora
+C = LpVariable("Cintos", lowBound=0, cat="Continuous")   # Cintos produzidos por hora
+
+# Definir a função objetivo (Maximizar Lucro)
+ex11 += 5 * S + 2 * C, "Lucro_maximo"
+
+# Adicionar restrições
+ex11 += 2 * S + 1 * C <= 6         # Restrição de consumo de couro
+ex11 += 10 * S + 12 * C <= 60      # Restrição de tempo (60 minutos por hora)
+
+# Resolver o problema
+ex11.solve()
+
+# Exibir o status da solução
+print("Status da Solução:", LpStatus[ex11.status])
+
+# Exibir os valores das variáveis de decisão
+print(f"Pares de Sapatos (S) = {S.varValue}")
+print(f"Cintos (C) = {C.varValue}")
+
+# Exibir o lucro máximo
+print("Lucro máximo:", ex11.objective.value())
+
+#Exercício 12
+
+# Importação da biblioteca pulp
+!pip install pulp
+
+from pulp import LpProblem, LpVariable, LpMinimize, LpStatus, lpSum
+
+# Criar o problema de minimização de distância
+ex12 = LpProblem("Minimizar Distancia", LpMinimize)
+
+# Definir as variáveis de decisão
+X = LpVariable.dicts("X", [(i, j) for i in range(1, 4) for j in range(1, 5)], lowBound=0, cat="Continuous")
+
+# Definir as distâncias entre portos e lojas
+distancias = {
+    (1, 1): 30, (1, 2): 20, (1, 3): 24, (1, 4): 18,
+    (2, 1): 12, (2, 2): 36, (2, 3): 30, (2, 4): 24,
+    (3, 1): 8,  (3, 2): 15, (3, 3): 25, (3, 4): 20
+}
+
+# Definir a função objetivo (Minimizar Distância)
+ex12 += lpSum(distancias[(i, j)] * X[(i, j)] for i in range(1, 4) for j in range(1, 5)), "Distancia_minima"
+
+# Adicionar restrições de demanda das lojas (quantidade necessária dividida pela capacidade do caminhão)
+ex12 += 10 * (X[(1, 1)] + X[(2, 1)] + X[(3, 1)]) == 50  # Loja 1
+ex12 += 10 * (X[(1, 2)] + X[(2, 2)] + X[(3, 2)]) == 80  # Loja 2
+ex12 += 10 * (X[(1, 3)] + X[(2, 3)] + X[(3, 3)]) == 40  # Loja 3
+ex12 += 10 * (X[(1, 4)] + X[(2, 4)] + X[(3, 4)]) == 100  # Loja 4
+
+# Resolver o problema
+ex12.solve()
+
+# Exibir o status da solução
+print("Status da Solução:", LpStatus[ex12.status])
+
+# Exibir os valores das variáveis de decisão
+for i in range(1, 4):
+    for j in range(1, 5):
+        print(f"Quantidade de areia transportada do Porto {i} para a Loja {j} (X{i}{j}) = {X[(i, j)].varValue} viagens")
+
+# Exibir a distância mínima total
+print("Distância mínima total:", ex12.objective.value())
+
+#Exercicio 13
+
+!pip install pulp
+
+from pulp import LpProblem, LpVariable, LpMaximize, LpStatus, lpSum
+
+#Criar o problema
+ex13 = LpProblem("Max Lucro", LpMaximize)
+
+#Definir variáveis
+x = LpVariable.dicts("x",((i,j) for i in range(3) for j in range (3)), lowBound = 0, cat ='Integer')
+
+#Definir parâmetros
+#Lucro unitário de cada tamanho
+lucro_unitário = {0:140,1:120,2:100}
+#Capacidade de produção por fábrica
+capacidade_produtiva = {0:750, 1:900, 2:450}
+#Espaço ocupado por cada produto de cada tamanho
+espaco_necessario = {0:1.8, 1:1.35,2:1.08}
+#Espaço disponível por fábrica
+espaco_disponivel = {0:1170, 1:1080, 2:450}
+#Vendas por tamanho
+vendas = {0:900, 1:1200, 2:750}
+
+#FO
+ex13 += lpSum ( [lucro_unitário [j] * x [(i,j)] for i in range(3) for j in range(3) ]), "Lucro_max"
+
+#Restrições
+#Capacidade de produção por fábrica
+for i in range(3):
+  ex13 += lpSum([x[(i,j)] for j in range(3)]) <= capacidade_produtiva[i]
+
+#Espaço disponível por fábrica
+for i in range (3):
+  ex13 += lpSum( [ x [ (i,j) ] * espaco_necessario[j] for j in range (3)]) <= espaco_disponivel[i]
+
+#Vendas por tamanho
+  for j in range (3):
+    ex13 += lpSum([x[(i,j)] for i in range (3)]) <= vendas[j]
+
+
+#Resolução
+ex13.solve()
+
+#Para printar o status
+print("Status da Solução:", LpStatus[ex13.status])
+
+#Para printar as variáveis de decisao
+for v in ex13.variables():
+  print(v.name, "=", v.varValue)
+
+#Para printar a função objetivo
+print("Lucro máximo:", ex13.objective.value())
